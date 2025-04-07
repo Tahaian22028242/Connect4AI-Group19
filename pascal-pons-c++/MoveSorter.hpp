@@ -19,7 +19,7 @@
 #ifndef MOVE_SORTER_HPP
 #define MOVE_SORTER_HPP
 
-#include "Position.hpp"
+#include "pascal-pons-c++/Position.hpp"
 
 namespace GameSolver {
 namespace Connect4 {

@@ -21,9 +21,9 @@
 
 #include <vector>
 #include <string>
-#include "Position.hpp"
-#include "TranspositionTable.hpp"
-#include "OpeningBook.hpp"
+#include "pascal-pons-c++/Position.hpp"
+#include "pascal-pons-c++/TranspositionTable.hpp"
+#include "pascal-pons-c++/OpeningBook.hpp"
 
 namespace GameSolver {
 namespace Connect4 {

@@ -16,7 +16,7 @@
  * along with Connect4 Game Solver. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Solver.hpp"
+#include "pascal-pons-c++/Solver.cpp"
 #include <iostream>
 
 using namespace GameSolver::Connect4;

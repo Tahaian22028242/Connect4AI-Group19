@@ -21,8 +21,8 @@
 
 #include <iostream>
 #include <fstream>
-#include "Position.hpp"
-#include "TranspositionTable.hpp"
+#include "pascal-pons-c++/Position.hpp"
+#include "pascal-pons-c++/TranspositionTable.hpp"
 
 namespace GameSolver {
 namespace Connect4 {

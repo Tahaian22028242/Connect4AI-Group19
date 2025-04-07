@@ -1,5 +1,5 @@
-#include "Position.hpp"
-#include "OpeningBook.hpp"
+#include "pascal-pons-c++/Position.hpp"
+#include "pascal-pons-c++/OpeningBook.hpp"
 
 #include <iostream>
 #include <sstream>

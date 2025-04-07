@@ -17,8 +17,8 @@
  */
 
 #include <cassert>
-#include "Solver.hpp"
-#include "MoveSorter.hpp"
+#include "pascal-pons-c++/Solver.hpp"
+#include "pascal-pons-c++/MoveSorter.hpp"
 
 using namespace GameSolver::Connect4;
 
