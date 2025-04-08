@@ -168,7 +168,7 @@ def find_best_move(board, token):
             bestcol = col
     return bestcol, bestscore
 
-def minimax(board,depth, maximizingPlayer, alpha = -math.inf, beta = math.inf):
+def minimax(board, depth, maximizingPlayer, alpha = -math.inf, beta = math.inf):
     """Looks ahead to find the best move up to the depth, and use alpha-beta pruning to improve runtime"""
     leaf = is_terminal_node(board)
     if depth == 0 or leaf:
