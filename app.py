@@ -111,6 +111,8 @@ async def make_move(game_state: GameState) -> AIResponse:
 
             # Send move sequence to AI
             print(f"Move sequence: {move_sequence}")
+
+            # Send the move sequence to the AI process in main.cpp
             process.stdin.write(f"{move_sequence}\n")
             process.stdin.flush()
 
@@ -167,4 +169,4 @@ async def make_move(game_state: GameState) -> AIResponse:
         raise HTTPException(status_code=400, detail=str(e))
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8080)
+    uvicorn.run(app, host="0.0.0.0", port=8000)

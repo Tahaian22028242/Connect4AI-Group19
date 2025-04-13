@@ -29,7 +29,7 @@ int main() {
     int best_move = 0;
     int best_score = scores[0];
 
-    for(int move = 0; move < Position::WIDTH; move++) {
+    for (int move = 0; move < Position::WIDTH; move++) {
         if(scores[move] > best_score) {
             best_score = scores[move];
             best_move = move;

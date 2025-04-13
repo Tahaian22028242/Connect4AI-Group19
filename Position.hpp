@@ -301,7 +301,7 @@ class Position {
     // vertical;
     position_t r = (position << 1) & (position << 2) & (position << 3);
 
-    //horizontal
+    // horizontal
     position_t p = (position << (HEIGHT + 1)) & (position << 2 * (HEIGHT + 1));
     r |= p & (position << 3 * (HEIGHT + 1));
     r |= p & (position >> (HEIGHT + 1));
