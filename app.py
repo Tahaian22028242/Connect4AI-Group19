@@ -68,9 +68,9 @@ def clear_state():
         os.remove(STATE_FILE)
 
 def start_ai_process() -> subprocess.Popen:
-
+    """Start the AI process"""
     return subprocess.Popen(
-        ["./connect"],
+        ["./connect"],    # Đây là file thực thi được biên dịch từ main.cpp
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
@@ -109,15 +109,13 @@ async def make_move(game_state: GameState) -> AIResponse:
             if last_move >= 0:
                 move_sequence += str(last_move + 1)
 
-            # Send move sequence to AI
             print(f"Move sequence: {move_sequence}")
-
-            # Send the move sequence to the AI process in main.cpp
+            
+            # Gửi chuỗi nước đi đến AI
             process.stdin.write(f"{move_sequence}\n")
             process.stdin.flush()
 
-            print(f"Sending move sequence to AI: {move_sequence}")
-            # Get AI's move
+            # Nhận nước đi từ AI
             selected_move = -1
             while True:
                 line = process.stdout.readline().strip()
@@ -126,6 +124,7 @@ async def make_move(game_state: GameState) -> AIResponse:
                     break
                 try:
                     selected_move = int(line)
+                    # Cập nhật bảng với nước đi của AI
                     game_state.board = [row[:] for row in game_state.board]
                     for row in range(5, -1, -1):
                         if game_state.board[row][selected_move] == 0:

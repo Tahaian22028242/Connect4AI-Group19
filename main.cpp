@@ -7,7 +7,8 @@
 
 using namespace GameSolver::Connect4;
 
-int main() {
+int main()
+{
     std::string move_sequence;
     int current_player;
     Solver solver;
@@ -19,7 +20,8 @@ int main() {
 
     // Create Position and replay the game
     Position P;
-    for (char move : move_sequence) {
+    for (char move : move_sequence)
+    {
         int col = move - '1';
         P.playCol(col);
     }
@@ -29,12 +31,13 @@ int main() {
     int best_move = 0;
     int best_score = scores[0];
 
-    for (int move = 0; move < Position::WIDTH; move++) {
-        if(scores[move] > best_score) {
+    for (int move = 0; move < Position::WIDTH; move++)
+    {
+        if (scores[move] > best_score)
+        {
             best_score = scores[move];
             best_move = move;
         }
-
     }
 
     std::cout << best_move << std::endl;
