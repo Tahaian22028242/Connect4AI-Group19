@@ -52,9 +52,9 @@ pip install -r requirements.txt
 
 **Cách 1:** Sử dụng file build (khuyến nghị)
 
-- **Windows:** Nháy đúp chuột vào file build.bat  hoặc gõ lệnh sau vào Terminal:
+- **Windows:** Nháy đúp chuột vào file build.bat hoặc gõ lệnh sau vào Terminal:
 ```bash
-build.bat
+.\build.bat
 ```
 - **Linux/macOS:** Gõ các lệnh sau vào Terminal:
 ```bash
@@ -96,10 +96,9 @@ if __name__ == "__main__":
 Để server của bạn có thể truy cập được từ internet, bạn có thể sử dụng Ngrok:
 
 1. Tải và cài đặt Ngrok: https://ngrok.com/download
-2. Chạy server FastAPI của bạn (mặc định cổng 8080)
-3. Trong terminal khác, chạy lệnh:
+2. Trong terminal của Ngrok (ngrok.exe), chạy lệnh:
 ```bash
-ngrok http 8080
+ngrok http 8000 # hoặc cổng khác tương ứng, số cổng nằm trong file connect4_api.py
 ```
 4. Sao chép URL Forwarding (dạng https://xxxx-xxxx.ngrok-free.app) và đăng ký với server chính.
 
