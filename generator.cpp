@@ -1,3 +1,5 @@
+// This file generates a connect4 opening book from scored positions read from stdin
+// and also generates all possible positions up to a given depth.
 #include "Position.hpp"
 #include "OpeningBook.hpp"
 
