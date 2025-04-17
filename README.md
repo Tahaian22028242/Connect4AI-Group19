@@ -16,11 +16,11 @@ Một ứng dụng trò chơi Connect 4 với AI thông minh, được phát tri
 
 ## Cấu trúc dự án
 
-- connect4_api.py - API chính xử lý logic trò chơi và kết nối với AI.
-- connect4_solver.cpp - Chương trình C++ triển khai thuật toán AI.
-- connect4_algorithm.cpp & connect4_algorithm.hpp - Triển khai thuật toán giải Connect 4.
-- Position.hpp - Định nghĩa cấu trúc bàn chơi và các nước đi.
-- 7x6.book - Tệp opening book chứa các nước đi tối ưu đã được tính toán trước.
+- `connect4_api.py` - API chính xử lý logic trò chơi và kết nối với AI.
+- `connect4_solver.cpp` - Chương trình C++ triển khai thuật toán AI.
+- `connect4_algorithm.cpp` & `connect4_algorithm.hpp` - Triển khai thuật toán giải Connect 4.
+- `Position.hpp` - Định nghĩa cấu trúc bàn chơi và các nước đi.
+- `7x6.book` - Tệp opening book chứa các nước đi tối ưu đã được tính toán trước.
 
 ## Yêu cầu hệ thống
 
@@ -114,13 +114,12 @@ AI sử dụng kết hợp giữa:
 ## Tùy chỉnh AI
 
 Nếu bạn muốn tích hợp thuật toán AI của riêng mình:
-1. Sửa đổi file connect4_api.py để thay thế phần gọi tiến trình AI.
+1. Sửa đổi file `connect4_api.py` để thay thế phần gọi tiến trình AI.
 2. Triển khai thuật toán AI của bạn trực tiếp trong Python hoặc tạo một chương trình ngoài tuân theo cùng giao thức.
 
 ## Giấy phép
 
-Phần mã nguồn C++ được phát hành dưới giấy phép AGPL v3. 
-Để biết thêm thông tin, bạn có thể đọc [hướng dẫn từng bước để xây dựng AI Connect 4 hoàn hảo](http://blog.gamesolver.org).
+[Hướng dẫn từng bước để xây dựng AI Connect 4 hoàn hảo](http://blog.gamesolver.org).
 
 ---
 
