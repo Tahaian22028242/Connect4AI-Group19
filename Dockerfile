@@ -8,11 +8,11 @@ RUN apt-get update \
 
 WORKDIR /app
 # Copy engine sources, headers and opening book
-COPY connect4_solver.cpp connect4_algorithm.cpp connect4_algorithm.hpp OpeningBook.hpp TranspositionTable.hpp MoveSorter.hpp Position.hpp 7x6.book ./
+COPY engine.cpp connect4_algorithm.cpp connect4_algorithm.hpp OpeningBook.hpp TranspositionTable.hpp MoveSorter.hpp Position.hpp 7x6.book ./
 
 # Compile into .so for Linux
 RUN g++ -O3 -std=c++17 -shared -fPIC \
-       connect4_algorithm.cpp connect4_solver.cpp \
+       connect4_algorithm.cpp engine.cpp \
        -o libconnect.so
 
 # Stage 2: application image
