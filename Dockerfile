@@ -21,7 +21,7 @@ WORKDIR /app
 
 # Copy shared library and application code
 COPY --from=builder /app/libconnect.so ./libconnect.so
-COPY app.py 7x6.book ./
+COPY app.py 7x6.book engine_cache.json ./
 
 # Install Python dependencies
 RUN pip install --no-cache-dir fastapi uvicorn pydantic typing
