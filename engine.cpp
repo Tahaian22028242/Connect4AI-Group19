@@ -1,5 +1,5 @@
 // engine.cpp
-#include "Solver.hpp"        // định nghĩa Solver, Position, v.v. :contentReference[oaicite:0]{index=0}&#8203;:contentReference[oaicite:1]{index=1}
+#include "connect4_algorithm.hpp"        // định nghĩa Solver, Position, v.v. :contentReference[oaicite:0]{index=0}&#8203;:contentReference[oaicite:1]{index=1}
 #include <string>
 #include <vector>
 // g++ -O3 -std=c++17 -shared -static -static-libgcc -static-libstdc++ -lwinpthread engine.cpp Solver.cpp -o connect.dll
