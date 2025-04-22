@@ -19,12 +19,17 @@ RUN g++ -O3 -std=c++17 -shared -fPIC \
 FROM python:3.12-slim
 WORKDIR /app
 
+# Copy file requirements.txt và cài đặt dependencies
+COPY requirements.txt .
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+
 # Copy shared library and application code
 COPY --from=builder /app/libconnect.so ./libconnect.so
 COPY app.py 7x6.book engine_cache.json ./
 
-# Install Python dependencies
-RUN pip install --no-cache-dir fastapi uvicorn pydantic typing
+# # Install Python dependencies
+# RUN pip install --no-cache-dir fastapi uvicorn pydantic typing
 
 EXPOSE 8080
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8080"]
