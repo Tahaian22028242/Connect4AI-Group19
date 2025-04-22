@@ -46,7 +46,7 @@ state_lock = asyncio.Lock()
 # initial state
 app.state.board         = [[0]*7 for _ in range(6)]
 app.state.seq           = ""
-app.state.total_elapsed = 0.0   # tổng thời gian đã tốn (giây)
+
 
 class GameState(BaseModel):
     board: List[List[int]]
@@ -56,7 +56,7 @@ class GameState(BaseModel):
 
 class AIResponse(BaseModel):
     move: int
-    total_elapsed: float  # trả về tổng thời gian đã tốn cho cả ván
+# trả về tổng thời gian đã tốn cho cả ván
 
 @app.on_event("startup")
 async def preload_book():
@@ -69,7 +69,7 @@ async def health_check():
 
 @app.post("/api/connect4-move", response_model=AIResponse)
 async def make_move(gs: GameState):
-    start = time.time()
+
 
     async with state_lock:
         # nếu ván mới thì reset cả state và bộ đếm
@@ -112,11 +112,10 @@ async def make_move(gs: GameState):
         app.state.seq   = seq
 
     # đo thời gian cho lần này, cộng dồn rồi trả về
-    elapsed           = time.time() - start
-    app.state.total_elapsed += elapsed
-    print(f"⏱ Move took {elapsed:.6f}s, total elapsed so far: {app.state.total_elapsed:.6f}s")
 
-    return AIResponse(move=ai_col, total_elapsed=app.state.total_elapsed)
+    
+
+    return AIResponse(move=ai_col)
 
 if __name__ == "__main__":
     import uvicorn
