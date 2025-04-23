@@ -8,13 +8,22 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List
 
+import threading # để ghi cache không block request
+
+import logging # để ghi log vào file thay cho print (stdout) 
+logging.basicConfig(level=logging.INFO)
+
 # ——————————————————————————————————————————————————————————————————
 # Load engine & cache
 # ——————————————————————————————————————————————————————————————————
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DLL_NAME = "connect.dll" if os.name == "nt" else "libconnect.so"
 DLL_PATH = os.path.join(BASE_DIR, DLL_NAME)
-CACHE_PATH = os.path.join(BASE_DIR, "engine_cache.json")
+CACHE_PATH = os.path.join(BASE_DIR, "connect4_cache.json")
+
+# kiểm tra xem file DLL có tồn tại không
+if not os.path.exists(DLL_PATH):
+    raise RuntimeError(f"Engine library not found at {DLL_PATH}")
 
 # load or init cache
 try:
@@ -28,14 +37,29 @@ _lib = loader(DLL_PATH)
 _lib.best_move.argtypes = [ctypes.c_char_p]
 _lib.best_move.restype  = ctypes.c_int
 
+# load engine
 def call_engine(seq: str) -> int:
     if seq in ENGINE_CACHE:
         return ENGINE_CACHE[seq]
     mv = _lib.best_move(seq.encode())
     ENGINE_CACHE[seq] = mv
-    with open(CACHE_PATH, "w") as f:
-        json.dump(ENGINE_CACHE, f)
+    # with open(CACHE_PATH, "w") as f:
+    #     json.dump(ENGINE_CACHE, f)
     return mv
+
+# Lưu cache định kỳ
+# Ghi cache vào file không block request
+def periodic_save_cache(interval=10):
+    while True:
+        time.sleep(interval)
+        try:
+            with open(CACHE_PATH, "w") as f:
+                json.dump(ENGINE_CACHE, f)
+        except Exception as e:
+            print(f"Warning: Failed to save cache: {e}")
+
+# Chạy thread ghi cache định kỳ khi khởi động
+threading.Thread(target=periodic_save_cache, args=(10,), daemon=True).start()
 
 # ——————————————————————————————————————————————————————————————————
 # FastAPI & Models
@@ -114,7 +138,10 @@ async def make_move(gs: GameState):
     # đo thời gian cho lần này, cộng dồn rồi trả về
     elapsed = time.time() - start
     app.state.total_elapsed += elapsed
-    print(f"⏱ Move took {elapsed:.6f}s, total elapsed so far: {app.state.total_elapsed:.6f}s")
+    # print(f"⏱ Move took {elapsed:.6f}s, total elapsed so far: {app.state.total_elapsed:.6f}s")
+
+    # Thay print bằng logging.info
+    logging.info(f"⏱ Move took {elapsed:.6f}s, total elapsed so far: {app.state.total_elapsed:.6f}s")
 
     return AIResponse(move=ai_col, total_elapsed=app.state.total_elapsed)
 

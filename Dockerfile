@@ -6,13 +6,16 @@ RUN apt-get update \
        build-essential \
     && rm -rf /var/lib/apt/lists/*
 
+# Cấu hình môi trường
+ENV PYTHONUNBUFFERED=1
+
 WORKDIR /app
 # Copy engine sources, headers and opening book
-COPY engine.cpp connect4_algorithm.cpp connect4_algorithm.hpp OpeningBook.hpp TranspositionTable.hpp MoveSorter.hpp Position.hpp 7x6.book ./
+COPY connect4_engine.cpp connect4_algorithm.cpp connect4_algorithm.hpp OpeningBook.hpp TranspositionTable.hpp MoveSorter.hpp Position.hpp 7x6.book ./
 
 # Compile into .so for Linux
 RUN g++ -O3 -std=c++17 -shared -fPIC \
-       connect4_algorithm.cpp engine.cpp \
+       connect4_algorithm.cpp connect4_engine.cpp \
        -o libconnect.so
 
 # Stage 2: application image
@@ -21,12 +24,12 @@ WORKDIR /app
 
 # Copy file requirements.txt và cài đặt dependencies
 COPY requirements.txt .
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+RUN pip install --upgrade pip --root-user-action=ignore \
+    && pip install --root-user-action=ignore -r requirements.txt
 
 # Copy shared library and application code
 COPY --from=builder /app/libconnect.so ./libconnect.so
-COPY app.py 7x6.book engine_cache.json ./
+COPY app.py 7x6.book connect4_cache.json ./
 
 # # Install Python dependencies
 # RUN pip install --no-cache-dir fastapi uvicorn pydantic typing
