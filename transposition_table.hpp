@@ -1,3 +1,5 @@
+/* Đây là file header transposition_table.hpp – định nghĩa bảng băm (hash table),
+  giúp lưu trữ và truy xuất trạng thái đã duyệt rất nhanh (transposition table). */
 #ifndef TRANSPOSITION_TABLE_HPP
 #define TRANSPOSITION_TABLE_HPP
 
@@ -15,6 +17,7 @@ namespace GameSolver
     {
       return (min + max) / 2;
     }
+    
     /**
      * tells if an integer n has a a divisor between min (inclusive) and max (exclusive)
      */

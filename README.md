@@ -19,7 +19,7 @@ Một ứng dụng trò chơi Connect 4 với AI thông minh, được phát tri
 - `connect4_api.py` - API chính xử lý logic trò chơi và kết nối với AI.
 - `connect4_solver.cpp` - Chương trình C++ triển khai thuật toán AI.
 - `connect4_algorithm.cpp` & `connect4_algorithm.hpp` - Triển khai thuật toán giải Connect 4.
-- `Position.hpp` - Định nghĩa cấu trúc bàn chơi và các nước đi.
+- `connect4_position.hpp` - Định nghĩa cấu trúc bàn chơi và các nước đi.
 - `7x6.book` - Tệp opening book chứa các nước đi tối ưu đã được tính toán trước.
 
 ## Yêu cầu hệ thống

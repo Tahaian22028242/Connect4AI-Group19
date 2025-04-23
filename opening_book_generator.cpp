@@ -1,7 +1,7 @@
 // This file generates a connect4 opening book from scored positions read from stdin
 // and also generates all possible positions up to a given depth.
-#include "Position.hpp"
-#include "OpeningBook.hpp"
+#include "connect4_position.hpp"
+#include "opening_book.hpp"
 
 #include <iostream>
 #include <sstream>
@@ -91,9 +91,21 @@ int main(int argc, char **argv)
   if (argc > 1)
   {
     int depth = atoi(argv[1]);
+    if (depth <= 0 || depth > 42)
+    { // 42 là số ô tối đa của Connect4
+      std::cerr << "Invalid depth: " << depth << std::endl;
+      return 1;
+    }
     char pos_str[depth + 1] = {0};
     explore(Position(), pos_str, depth);
   }
+  if (argc > 2)
+  {
+    std::cerr << "Usage: " << argv[0] << " [max_depth]" << std::endl;
+    return 1;
+  }
   else
+  {
     generate_opening_book();
+  }
 }

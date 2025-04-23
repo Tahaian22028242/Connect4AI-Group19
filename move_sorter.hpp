@@ -1,7 +1,8 @@
+// Dùng để sắp xếp các nước đi tiếp theo theo điểm số trong thuật toán AI Connect4.
 #ifndef MOVE_SORTER_HPP
 #define MOVE_SORTER_HPP
 
-#include "Position.hpp"
+#include "connect4_position.hpp"
 
 namespace GameSolver
 {
@@ -23,13 +24,19 @@ namespace GameSolver
     {
     public:
       /**
+       * Check if the container is empty
+       */
+      bool empty() const { return size == 0; }
+
+      /**
        * Add a move in the container with its score.
        * You cannot add more than Position::WIDTH moves
        */
       void add(const Position::position_t move, const int score)
       {
         int pos = size++;
-        for (; pos && entries[pos - 1].score > score; --pos)
+        // Sắp xếp giảm dần theo score (score lớn đứng trước)
+        for (; pos && entries[pos - 1].score < score; --pos) // tìm vị trí để chèn 
           entries[pos] = entries[pos - 1];
         entries[pos].move = move;
         entries[pos].score = score;

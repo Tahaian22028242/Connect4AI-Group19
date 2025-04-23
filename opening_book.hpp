@@ -1,10 +1,11 @@
+// Opening book for Connect4 game solver
 #ifndef OPENING_BOOK_HPP
 #define OPENING_BOOK_HPP
 
 #include <iostream>
 #include <fstream>
-#include "Position.hpp"
-#include "TranspositionTable.hpp"
+#include "connect4_position.hpp"
+#include "transposition_table.hpp"
 
 namespace GameSolver
 {
@@ -60,7 +61,7 @@ namespace GameSolver
       }
 
     public:
-      OpeningBook(int width, int height) : T{0}, width{width}, height{height}, depth{-1} {} // Empty opening book
+      OpeningBook(int width, int height) : T{nullptr}, width{width}, height{height}, depth{-1} {} // Empty opening book
 
       OpeningBook(int width, int height, int depth, TableGetter<Position::position_t, uint8_t> *T) : T{T}, width{width}, height{height}, depth{depth} {} // Empty opening book
       /**
@@ -151,7 +152,18 @@ namespace GameSolver
 
       void save(const std::string output_file) const
       {
-        std::ofstream ofs(output_file, std::ios::binary);
+        if (!T) // no opening book to save
+          return;
+        std::ofstream ofs(output_file, std::ios::binary); // open file
+        if (!ofs)                                         // check if file is opened successfully
+        {
+          std::cerr << "Unable to open file for writing: " << output_file << std::endl;
+          return;
+        }
+        if (T->getSize() == 0) // empty opening book to save
+          return;              // nothing to save
+        std::cerr << "Saving opening book to file: " << output_file << ". ";
+        // write header
         char tmp;
         tmp = width;
         ofs.write(&tmp, 1);
@@ -173,16 +185,13 @@ namespace GameSolver
 
       int get(const Position &P) const
       {
-        if (P.nbMoves() > depth)
+        if (!T || P.nbMoves() > depth)
           return 0;
         else
           return T->get(P.key3());
       }
 
-      ~OpeningBook()
-      {
-        delete T;
-      }
+      ~OpeningBook() = default;
     };
 
   } // namespace Connect4
