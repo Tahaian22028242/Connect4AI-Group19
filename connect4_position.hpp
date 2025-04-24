@@ -1,3 +1,7 @@
+/*  Position header file
+Chức năng:  Định nghĩa class Position để biểu diễn trạng thái bàn cờ Connect4 bằng bitboard 
+          (dùng bit để lưu trạng thái từng ô).
+          Dùng các kỹ thuật tối ưu bitboard để kiểm tra thắng/thua, sinh nước đi rất nhanh. */
 #ifndef POSITION_HPP
 #define POSITION_HPP
 

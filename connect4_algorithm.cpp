@@ -1,6 +1,6 @@
 #include <cassert>
 #include "connect4_algorithm.hpp"
-#include "MoveSorter.hpp"
+#include "move_sorter.hpp"
 
 using namespace GameSolver::Connect4;
 
@@ -83,8 +83,9 @@ namespace GameSolver
         if (Position::position_t move = possible & Position::column_mask(columnOrder[i]))
           moves.add(move, P.moveScore(move));
 
-      while (Position::position_t next = moves.getNext())
+      while (!moves.empty())
       {
+        Position::position_t next = moves.getNext();
         Position P2(P);
         P2.play(next);                           // It's opponent turn in P2 position after current player plays x column.
         int score = -negamax(P2, -beta, -alpha); // explore opponent's score within [-beta;-alpha] windows:

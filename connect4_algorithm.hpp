@@ -3,9 +3,9 @@
 
 #include <vector>
 #include <string>
-#include "Position.hpp"
-#include "TranspositionTable.hpp"
-#include "OpeningBook.hpp"
+#include "connect4_position.hpp"
+#include "transposition_table.hpp"
+#include "opening_book.hpp"
 
 namespace GameSolver
 {

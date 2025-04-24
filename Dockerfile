@@ -11,7 +11,7 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 # Copy engine sources, headers and opening book
-COPY connect4_engine.cpp connect4_algorithm.cpp connect4_algorithm.hpp OpeningBook.hpp TranspositionTable.hpp MoveSorter.hpp Position.hpp 7x6.book ./
+COPY connect4_engine.cpp connect4_algorithm.cpp connect4_algorithm.hpp opening_book.hpp transposition_table.hpp move_sorter.hpp connect4_position.hpp 7x6.book ./
 
 # Compile into .so for Linux
 RUN g++ -O3 -std=c++17 -shared -fPIC \
@@ -30,9 +30,6 @@ RUN pip install --upgrade pip --root-user-action=ignore \
 # Copy shared library and application code
 COPY --from=builder /app/libconnect.so ./libconnect.so
 COPY app.py 7x6.book connect4_cache.json ./
-
-# # Install Python dependencies
-# RUN pip install --no-cache-dir fastapi uvicorn pydantic typing
 
 EXPOSE 8080
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8080"]
