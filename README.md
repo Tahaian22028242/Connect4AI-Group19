@@ -5,28 +5,40 @@
 ![Python](https://img.shields.io/badge/Python-FastAPI-brightgreen)
 ![C++](https://img.shields.io/badge/C%2B%2B-17-orange)
 
-Một ứng dụng trò chơi Connect 4 với AI thông minh, được phát triển bằng Python (FastAPI) cho backend và C++ cho thuật toán AI. Dự án này kết hợp cả giao diện web và một giải thuật AI mạnh mẽ.
+Một ứng dụng AI Connect 4 hiệu suất cao, sử dụng FastAPI (Python) làm backend và engine C++ tối ưu, hỗ trợ cache và Docker.
 
 ## Tính năng
 
 - API RESTful cho trò chơi Connect 4.
-- Thuật toán AI mạnh dựa trên opening book và phân tích trạng thái.
-- Giao diện trực quan để chơi.
-- Hỗ trợ chơi người với máy.
+- Engine C++ tối ưu, giao tiếp trực tiếp qua shared library (`.so`/`.dll`).
+- Hỗ trợ cache kết quả để tăng tốc.
+- Dễ dàng build và deploy bằng Docker.
+- Có thể mở rộng giao diện web.
 
 ## Cấu trúc dự án
 
-- `connect4_api.py` - API chính xử lý logic trò chơi và kết nối với AI.
-- `connect4_solver.cpp` - Chương trình C++ triển khai thuật toán AI.
-- `connect4_algorithm.cpp` & `connect4_algorithm.hpp` - Triển khai thuật toán giải Connect 4.
-- `connect4_position.hpp` - Định nghĩa cấu trúc bàn chơi và các nước đi.
-- `7x6.book` - Tệp opening book chứa các nước đi tối ưu đã được tính toán trước.
+```bash
+.
+├── app.py                  # FastAPI backend (entrypoint)
+├── connect4_engine.cpp     # C++ engine (entrypoint cho AI)
+├── connect4_algorithm.cpp  # Thuật toán AI
+├── connect4_algorithm.hpp  # Khai báo thuật toán
+├── opening_book.hpp        # Sách khai cuộc
+├── transposition_table.hpp # Bảng băm trạng thái
+├── move_sorter.hpp         # Sắp xếp nước đi
+├── connect4_position.hpp   # Biểu diễn trạng thái bàn cờ
+├── 7x6.book                # File opening book
+├── connect4_cache.json     # Cache kết quả AI
+├── requirements.txt        # Python dependencies
+├── Dockerfile              # Docker build file
+└── README.md
+```
 
 ## Yêu cầu hệ thống
 
-- Python 3.8+ (cho FastAPI).
-- C++ Compiler hỗ trợ C++17 (g++ hoặc MSVC).
-- Các thư viện Python: FastAPI, uvicorn, pydantic.
+- Python 3.12+
+- Docker (khuyến nghị để build và chạy nhanh)
+- Compiler hỗ trợ C++17 (nếu build thủ công)
 
 ## Hướng dẫn cài đặt
 
@@ -48,48 +60,53 @@ cd Connect4AI-Group19
 pip install -r requirements.txt
 ```
 
-### 3. Biên dịch thuật toán AI C++
+### 3. Biên dịch engine AI C++
 
-**Cách 1:** Sử dụng file build (khuyến nghị)
-
-- **Windows:** Nháy đúp chuột vào file build.bat hoặc gõ lệnh sau vào Terminal:
+**Cách 1:** Dùng Docker (khuyến nghị)
 ```bash
-.\build.bat
-```
-- **Linux/macOS:** Gõ các lệnh sau vào Terminal:
-```bash
-chmod +x build.sh  # chỉ cần làm lần đầu, những lần sau không cần lệnh này 
-./build.sh
+docker build -t connect4ai .
+docker run -p 8080:8080 connect4ai
 ```
 
 **Cách 2:** Biên dịch thủ công
 ```bash
-g++ -std=c++17 -O2 -o connect.exe connect4_solver.cpp connect4_algorithm.cpp
+g++ -O3 -std=c++17 -shared -fPIC \
+    connect4_algorithm.cpp connect4_engine.cpp \
+    -o libconnect.so
 ```
+*(Trên Windows, build ra connect.dll và sửa lại app.py cho phù hợp)*
 
-**Lưu ý:** Nếu gặp lỗi "g++ command not found", bạn cần cài đặt trình biên dịch C++:
-- **Windows:** Cài đặt MinGW hoặc MSYS2 và thêm vào PATH
-- **Mac:** `brew install gcc`
-- **Linux:** `sudo apt install g++`
-
-### 4. Chạy ứng dụng
+### 4. Chạy ứng dụng FastAPI
 ```bash
-python connect4_api.py
-```
-
-Sau khi chạy, ứng dụng sẽ khởi động trên cổng 8000. Nếu cổng 8000 đã được sử dụng, bạn có thể thay đổi cổng trong file connect4_api.py.
-
-```python
-if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+uvicorn app:app --host 0.0.0.0 --port 8080
 ```
 
 ## Cách sử dụng
 
-1. Đảm bảo cả API Python và chương trình AI C++ đã được cài đặt đúng cách.
-2. Truy cập API tại `http://localhost:<your-port-number>` (mặc định là http://localhost:8000).
+1. Đảm bảo đã build xong shared library và cài đủ Python dependencies.
+2. Truy cập API tại `http://localhost:8080`.
 3. Gửi yêu cầu POST đến `/api/connect4-move` với trạng thái bàn chơi hiện tại.
-4. API sẽ gọi thuật toán AI và trả về nước đi tốt nhất.
+
+**Ví dụ request:**
+```json
+{
+  "board": [[0,0,0,0,0,0,0], ...],  // 6x7 ma trận
+  "current_player": 1,
+  "valid_moves": [0,1,2,3,4,5,6],
+  "is_new_game": false
+}
+```
+
+**Response:**
+```json
+{
+  "move": 3,
+  "total_elapsed": 0.0123
+}
+```
+
+**Test**:
+- **GET** `/api/test` : Kiểm tra server hoạt động.
 
 ## Triển khai public với Ngrok
 
@@ -98,7 +115,7 @@ if __name__ == "__main__":
 1. Tải và cài đặt Ngrok: https://ngrok.com/download
 2. Trong terminal của Ngrok (ngrok.exe), chạy lệnh:
 ```bash
-ngrok http 8000 # hoặc cổng khác tương ứng, số cổng nằm trong file connect4_api.py
+ngrok http 8000 # hoặc cổng khác tương ứng, số cổng nằm trong file app.py
 ```
 4. Sao chép URL Forwarding (dạng https://xxxx-xxxx.ngrok-free.app) và đăng ký với server chính.
 
@@ -107,15 +124,15 @@ Xem thêm hướng dẫn tạo API public chi tiết cho chương trình: https:
 ## Giải thích thuật toán AI
 
 AI sử dụng kết hợp giữa:
-1. **Opening BBook:** Sử dụng các nước đi tối ưu đã được tính toán trước.
+1. **Opening Book:** Sử dụng các nước đi tối ưu đã được tính toán trước.
 2. **Solver:** Phân tích trạng thái hiện tại để tìm nước đi tốt nhất.
-3. **Đánh giá nước đi:** Tính toán điểm số cho từng nước đi khả dụng và chọn nước đi có điểm cao nhất.
+3. **Đánh giá nước đi:** Tính toán điểm số cho từng nước đi khả dụng và chọn nước đi có điểm cao nhất (nếu nhiều nước đi tốt ngang nhau sẽ chọn ngẫu nhiên).
 
-## Tùy chỉnh AI
+## Ghi chú
 
-Nếu bạn muốn tích hợp thuật toán AI của riêng mình:
-1. Sửa đổi file `connect4_api.py` để thay thế phần gọi tiến trình AI.
-2. Triển khai thuật toán AI của bạn trực tiếp trong Python hoặc tạo một chương trình ngoài tuân theo cùng giao thức.
+- AI sẽ chọn ngẫu nhiên giữa các nước đi tốt nhất nếu có nhiều lựa chọn ngang điểm.
+- Cache được lưu trong RAM và định kỳ ghi ra file `connect4_cache.json`.
+- Nếu muốn giữ cache lâu dài, mount volume Docker hoặc copy file cache ra ngoài.
 
 ## Giấy phép
 
@@ -124,5 +141,3 @@ Nếu bạn muốn tích hợp thuật toán AI của riêng mình:
 ---
 
 © 2025 Connect4AI Group 19
-
-
