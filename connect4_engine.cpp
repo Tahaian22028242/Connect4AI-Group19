@@ -74,6 +74,5 @@ extern "C"
 
             return best_col;
         }
-
-    } // extern "C"
-}
+    }
+} // extern "C"
