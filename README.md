@@ -17,13 +17,6 @@ Một ứng dụng AI Connect 4 hiệu suất cao, sử dụng FastAPI (Python) 
 
 ## Cấu trúc dự án
 
-<<<<<<< HEAD
-- `connect4_api.py` - API chính xử lý logic trò chơi và kết nối với AI.
-- `connect4_solver.cpp` - Chương trình C++ triển khai thuật toán AI.
-- `connect4_algorithm.cpp` & `connect4_algorithm.hpp` - Triển khai thuật toán giải Connect 4.
-- `connect4_position.hpp` - Định nghĩa cấu trúc bàn chơi và các nước đi.
-- `7x6.book` - Tệp opening book chứa các nước đi tối ưu đã được tính toán trước.
-=======
 ```bash
 .
 ├── app.py                  # FastAPI backend (entrypoint)
@@ -40,7 +33,6 @@ Một ứng dụng AI Connect 4 hiệu suất cao, sử dụng FastAPI (Python) 
 ├── Dockerfile              # Docker build file
 └── README.md
 ```
->>>>>>> 6e56d9b96f150b818f77068af2f4a19a37e152d1
 
 ## Yêu cầu hệ thống
 
